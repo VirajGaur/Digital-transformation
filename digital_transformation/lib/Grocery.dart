@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysql1/mysql1.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 // Expanded(
 //
@@ -116,16 +117,61 @@ import 'package:show_up_animation/show_up_animation.dart';
 import 'MainScreen.dart';
 import 'Maps.dart';
 
-class Grocery extends StatelessWidget {
+class Grocery extends StatefulWidget {
   @override
+  _groceryState createState() => _groceryState();
 
+  }
+
+class _groceryState extends State<Grocery>{
+  @override
+  List storeID =[] ;
+  List productID =[];
+  List TotalQuantity =[] ;
+  List Availability =[];
+  List Xcord=[];
+  List Ycord=[];
+  List ProductName=[];
+  List Price=[];
+  List image=[];
+  connectToSQL() async {
+    var settings = new ConnectionSettings(
+        host: 'ec2-54-208-82-154.compute-1.amazonaws.com',
+        port: 3306,
+        user: 'Youssef',
+        password: '40247459',
+        db: 'CSC4008'
+    );
+    int port = settings.port;
+
+    var conn = await MySqlConnection.connect(settings);
+    var count=await conn.query('SELECT StoreID,ProductID,Total_Quantity,Availability,`Co-ordinate X`,`Co-ordinate Y` FROM Inventory');
+    var results = await conn.query('SELECT x.StoreID,x.ProductID,x.Total_Quantity,x.Availability,x.`Co-ordinate X`,x.`Co-ordinate Y`,y.ProductName,y.Price,y.Image FROM Inventory x INNER JOIN Product y ON x.ProductID = y.ProductID');
+
+    for (var row in results) {
+      setState(() {
+        storeID.add(row[0]);
+        productID.add(row[1]);
+        TotalQuantity.add(row[2]);
+        Availability.add(row[3]);
+        Xcord.add(row[4]);
+        Ycord.add(row[5]);
+        ProductName.add(row[6]);
+        Price.add(row[7]);
+        image.add(row[8]);
+      });
+    };
+
+    conn.close();
+  }
   Widget build(BuildContext context) {
+    connectToSQL();
     return Scaffold(
       body: GridView.builder(
           physics: BouncingScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-          childAspectRatio: 0.75),
-          itemCount: 20,
+              childAspectRatio: 0.75),
+          itemCount: storeID.length,
           itemBuilder: (BuildContext ctx, index) {
             return Container(
               alignment: Alignment.center,
@@ -153,7 +199,7 @@ class Grocery extends StatelessWidget {
                           height: 120,
                           decoration: BoxDecoration( image: DecorationImage(
                             image: NetworkImage(
-                              'https://digitalcontent.api.tesco.com/v2/media/ghs/644848dc-9adf-40eb-b3cc-065bfbf0426c/snapshotimagehandler_4419443.jpeg?h=540&w=540',
+                           '${image[index]}'
                             ),
                             fit: BoxFit.cover,
 
@@ -169,7 +215,7 @@ class Grocery extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        'Milk'
+                                        ProductName[index]
                                     ),
 
                                   ],
@@ -180,7 +226,7 @@ class Grocery extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        '£2.50'
+                                        '£${Price[index]}'
                                     ),
 
                                   ],
@@ -200,12 +246,15 @@ class Grocery extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      'Available',
-                                      style: TextStyle(
-                                        color: Colors.green,
-                                      ),
-                                    ),
+                                  Text((() {
+            if(Availability[index]==1){
+            return "available"
+            ;}
+            else
+            return "unavailable";
+            }
+            )())
+
 
                                   ],
                                 ),
@@ -846,8 +895,8 @@ class Grocery extends StatelessWidget {
       // ),
 
     );
-}
   }
+}
 
 
 

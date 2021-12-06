@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 
+import 'Layout.dart';
 import 'MainScreen.dart';
 
 
@@ -93,7 +94,7 @@ class Login extends StatelessWidget {
                     onPressed: (){
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Main())
+                        MaterialPageRoute(builder: (context) => mainState())
                       );
 
                     },
