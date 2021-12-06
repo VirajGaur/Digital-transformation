@@ -134,6 +134,7 @@ class _groceryState extends State<Grocery>{
   List ProductName=[];
   List Price=[];
   List image=[];
+  var x=0;
   connectToSQL() async {
     var settings = new ConnectionSettings(
         host: 'ec2-54-208-82-154.compute-1.amazonaws.com',
@@ -147,25 +148,31 @@ class _groceryState extends State<Grocery>{
     var conn = await MySqlConnection.connect(settings);
     var count=await conn.query('SELECT StoreID,ProductID,Total_Quantity,Availability,`Co-ordinate X`,`Co-ordinate Y` FROM Inventory');
     var results = await conn.query('SELECT x.StoreID,x.ProductID,x.Total_Quantity,x.Availability,x.`Co-ordinate X`,x.`Co-ordinate Y`,y.ProductName,y.Price,y.Image FROM Inventory x INNER JOIN Product y ON x.ProductID = y.ProductID');
-
+    var resultsx=null;
     for (var row in results) {
       setState(() {
-        storeID.add(row[0]);
-        productID.add(row[1]);
-        TotalQuantity.add(row[2]);
-        Availability.add(row[3]);
-        Xcord.add(row[4]);
-        Ycord.add(row[5]);
-        ProductName.add(row[6]);
-        Price.add(row[7]);
-        image.add(row[8]);
+
+          storeID.add(row[0]);
+          productID.add(row[1]);
+          TotalQuantity.add(row[2]);
+          Availability.add(row[3]);
+          Xcord.add(row[4]);
+          Ycord.add(row[5]);
+          ProductName.add(row[6]);
+          Price.add(row[7]);
+          image.add(row[8]);
       });
+
     };
 
     conn.close();
   }
   Widget build(BuildContext context) {
-    connectToSQL();
+    if(x==0)
+      {
+        connectToSQL();
+        x++;
+      }
     return Scaffold(
       body: GridView.builder(
           physics: BouncingScrollPhysics(),
