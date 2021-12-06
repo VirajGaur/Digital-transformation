@@ -31,11 +31,12 @@ class _MapsState extends State<Maps> {
     var settings = new ConnectionSettings(
         host: 'ec2-54-208-82-154.compute-1.amazonaws.com',
         port: 3306,
-        user: 'Mateusz',
-        password: 'O6OX7DIK1',
+        user: 'Youssef',
+        password: '40247459',
         db: 'CSC4008'
     );
     port = settings.port;
+    
 
     var conn = await MySqlConnection.connect(settings);
     var results = await conn.query('select StoreName,Blueprint from Store where StoreID = 1');
