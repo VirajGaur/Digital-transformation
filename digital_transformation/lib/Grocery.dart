@@ -177,7 +177,7 @@ class _groceryState extends State<Grocery>{
       body: GridView.builder(
           physics: BouncingScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
-              childAspectRatio: 0.75),
+              childAspectRatio: 0.80),
           itemCount: storeID.length,
           itemBuilder: (BuildContext ctx, index) {
             return Container(
@@ -222,29 +222,48 @@ class _groceryState extends State<Grocery>{
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                        ProductName[index]
+                                        ProductName[index],
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
                                     ),
 
                                   ],
                                 ),
-                                Padding(
-                                    padding:const EdgeInsets.symmetric(horizontal:20.0)),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        '£${Price[index]}'
-                                    ),
 
-                                  ],
-                                ),
+
                               ],
                             ),
 
                           ),
                         ),
-                        Padding(
-                            padding:const EdgeInsets.symmetric(vertical:15.0)),
+                        Container(
+                          child:Container(
+                            child:Row(
+
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        '£${Price[index]}',
+                                      style: TextStyle(
+                                        fontSize: 12.0,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+
+                                  ],
+                                ),
+
+
+                              ],
+                            ),
+
+                          ),
+                        ),
                         Container(
                           child:Container(
                             child:Row(
@@ -254,8 +273,14 @@ class _groceryState extends State<Grocery>{
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                   Text((() {
-            if(Availability[index]==1){
-            return "available"
+            if(TotalQuantity[index]>0){
+              if(TotalQuantity[index]>5)
+                {
+                  return "available";
+                }else{
+                return "limited";
+              }
+
             ;}
             else
             return "unavailable";
@@ -288,18 +313,7 @@ class _groceryState extends State<Grocery>{
 
                           ),
                         ),
-                        Container(
-                          child:Container(
-                            child:Row(
 
-                              children: [
-
-
-                              ],
-                            ),
-
-                          ),
-                        ),
                       ],
                     ),
                   ),
