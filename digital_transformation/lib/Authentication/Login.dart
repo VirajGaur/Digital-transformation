@@ -1,12 +1,13 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:show_up_animation/show_up_animation.dart';
-
+import 'package:show_up_animation/show_up_animation.dart';
 import 'package:sizer/sizer.dart';
 import 'dart:ui';
 
-import 'Layout.dart';
-import 'MainScreen.dart';
+import 'Registration.dart';
+import '../MainScreen.dart';
 import 'package:mysql1/mysql1.dart';
 import 'dart:async';
 
@@ -19,9 +20,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final String query1 = 'SELECT EmailAddress, Password FROM Customer WHERE EmailAddress =';
-  final String query2 = ' AND PASSWORD = MD5(';
-  final String query3 = ');';
   String email = '';
   String password = '';
   int port = 0;
@@ -153,15 +151,74 @@ class _LoginState extends State<Login> {
                         },
                         child: Text("LOGIN"),)
                   ),
+      ShowUpAnimation(
+      delayStart: Duration(milliseconds: 1700),
+      animationDuration: Duration(milliseconds: 800),
+      curve: Curves.easeInCubic,
+      direction: Direction.vertical,
+      offset: 0.5,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+      AnimatedTextKit(
+      animatedTexts: [
+      TypewriterAnimatedText(
+      'Want to create a new accouunt?',
+      textStyle: const TextStyle(
+      color: Color.fromRGBO(0, 0, 0, 1.0),
+      fontFamily: 'Raleway',
+      fontSize: 20.0,
+      fontWeight: FontWeight.bold,
+      ),
+      cursor: '',
+
+      speed: const Duration(milliseconds: 100),
+      ),
+      ],
+
+      totalRepeatCount: 1,
+      pause: const Duration(milliseconds: 1000),
+      displayFullTextOnTap: true,
+      stopPauseOnTap: true,
+      ),
+            TextButton(
+              onPressed: (){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Registration()));
+
+
+              },
+              child: AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                    'sign up',
+                    textStyle: const TextStyle(
+                      color: Color.fromRGBO(0, 0, 0, 1.0),
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    cursor: '',
+
+                    speed: const Duration(milliseconds: 100),
+                  ),
+                ],
+
+
+
+              ),
+            ),
+
 
                 ],
               ),
 
-
+      ),
             ],
           )
+      ],
+      ),
       );
-
     },);
   }
 }
