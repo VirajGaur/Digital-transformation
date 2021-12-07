@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:show_up_animation/show_up_animation.dart';
-
+import 'package:sizer/sizer.dart';
 import 'Login.dart';
 
 class Start extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    return Sizer(builder: (context, orientation, deviceType){
     return Scaffold(
       backgroundColor: Colors.white,
 
@@ -126,6 +127,7 @@ class Start extends StatelessWidget {
       ),
 
     );
+    },);
 
   }
 }
