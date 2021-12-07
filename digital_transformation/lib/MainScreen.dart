@@ -2,58 +2,106 @@ import 'package:flutter/material.dart';
 
 import 'Grocery.dart';
 import 'Authentication/Login.dart';
+class mainscreen extends StatefulWidget{
+  final String name;
+  const mainscreen({Key? key, required this.name}) : super(key: key);
+  @override
+  _mainScreen createState() => _mainScreen(Name:name);
+}
 
-class Main extends StatelessWidget {
+class _mainScreen extends State<mainscreen>{
+  String Name;
+  _mainScreen({ required this.Name}) : super();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      child: Column(
         children: [
-          Column(
-            children: [Container(
-              padding: EdgeInsets.fromLTRB(20.0, 100.0, 40.0, 500.0),
-              child: Text('Main menu',
-                style: TextStyle(
-                  fontFamily: 'Alegreya',
-                  fontSize: 40.0,
-                  color: Colors.deepPurple,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          Container(
+            padding: EdgeInsets.fromLTRB(20.0,100.0,40.0,60.0),
+            child:
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => (Login())),
-                      );
-                    },
 
-                    child: Text('Login'),
+                  Row(
+                    children: [
+                      Text(
+                        'Welcome Back',
+                        textAlign: TextAlign.center,
+                        style:TextStyle(
+                          fontSize: 35,
+
+                        ) ,
+                      )
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Grocery()),
-                      );
-                    },
+                  Row(
 
+                    children: [
+                      Center(
+                        child: Text(
+                          Name,
+                          textAlign: TextAlign.center,
+                          style:TextStyle(
+                            fontSize: 35,
 
-                    child: Text('Grocery'),
-
-
+                          ) ,
+                        ),
+                      )
+                    ],
                   ),
                 ],
               ),
-            ],
+
           ),
+          Container(
+          padding: EdgeInsets.fromLTRB(20.0,100.0,40.0,60.0),
+            child:
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {  },
+                          child: Text(
+                            'Shop Offline?'
+                          ),
+
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () {
+                           Navigator.pop(context);
+                          },
+                          child: Text(
+                              'Sign Out'
+                          ),
+
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+
+          ),
+
         ],
       ),
     );
   }
+
 }

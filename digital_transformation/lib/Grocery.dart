@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:show_up_animation/show_up_animation.dart';
 // Expanded(
@@ -291,7 +292,7 @@ class _groceryState extends State<Grocery>{
                                   ],
                                 ),
                                 Padding(
-                                    padding:const EdgeInsets.symmetric(horizontal:10.0)),
+                                    padding:const EdgeInsets.symmetric(horizontal:5.0)),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [

@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:digital_transformation/Layout.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:show_up_animation/show_up_animation.dart';
@@ -23,7 +24,31 @@ class _LoginState extends State<Login> {
   String email = '';
   String password = '';
   int port = 0;
+  String Name='';
+  getNameSQL(String email,String password) async {
 
+    var settings = new ConnectionSettings(
+        host: 'ec2-54-208-82-154.compute-1.amazonaws.com',
+        port: 3306,
+        user: 'Youssef',
+        password: '40247459',
+        db: 'CSC4008'
+    );
+    int port = settings.port;
+
+    var conn = await MySqlConnection.connect(settings);
+    var name = await conn.query("SELECT FirstName FROM Customer WHERE EmailAddress = '" +  this.email +
+        "'AND PASSWORD = MD5('" + this.password + "');");
+    for (var row in name) {
+
+          Name=row[0];
+
+
+
+    };
+
+    conn.close();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,6 +153,8 @@ class _LoginState extends State<Login> {
                       var conn = await MySqlConnection.connect(settings);
                       var results = await conn.query("SELECT EmailAddress, Password FROM Customer WHERE EmailAddress = '" +  email +
                           "'AND PASSWORD = MD5('" + password + "');");
+
+
                       print(results);
 
                       if(results.isEmpty == true){
@@ -136,9 +163,11 @@ class _LoginState extends State<Login> {
 
                       }
                       else{
+                        getNameSQL(email,password);
                         Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => Main()));
+
+                            MaterialPageRoute(builder: (context) => mainState(Name:'john')));
 
                       }
 

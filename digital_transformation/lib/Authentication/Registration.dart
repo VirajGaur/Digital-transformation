@@ -109,7 +109,7 @@ class _RegistrationState extends State<Registration> {
       decoration: InputDecoration(
 
       icon: Icon(
-      Icons.password,
+      Icons.lock,
       color: Color.fromRGBO(255, 255, 255, 1.0),
       ),
       hintText: "password",
@@ -127,7 +127,7 @@ class _RegistrationState extends State<Registration> {
       },
       decoration: InputDecoration(
       icon: Icon(
-      Icons.password,
+      Icons.lock,
       color: Color.fromRGBO(255, 255, 255, 1.0),
       ),
       hintText: "Confirm password",

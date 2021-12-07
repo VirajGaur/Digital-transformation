@@ -7,12 +7,16 @@ import 'Maps.dart';
 
 class  mainState extends StatefulWidget {
   @override
-   _mainState createState() => _mainState();
+  final String Name;
+  const mainState({Key? key, required this.Name}) : super(key: key);
+   _mainState createState() => _mainState(Name:Name);
 }
 
 class _mainState extends State<mainState> {
   @override
   int index=0;
+   final String Name;
+   _mainState({ required this.Name}) : super();
   List<String> titles=
   [
     "Main Menu",
@@ -21,7 +25,7 @@ class _mainState extends State<mainState> {
   ];
   List<Widget> screens=
   [
-    Main(),
+
     Grocery(),
     Maps(),
   ];
@@ -38,7 +42,12 @@ class _mainState extends State<mainState> {
 
         ),
       ),
-      body: screens[index],
+      body: Container(
+          color: Colors.white,
+          child: (index>0)
+              ? screens[index-1]
+              : mainscreen(name: Name)
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
         onTap: (int Index){
