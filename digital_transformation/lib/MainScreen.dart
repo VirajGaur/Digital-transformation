@@ -1,17 +1,26 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:mysql1/mysql1.dart';
+import 'package:show_up_animation/show_up_animation.dart';
 
 import 'Grocery.dart';
 import 'Authentication/Login.dart';
+import 'dart:async';
+
 class mainscreen extends StatefulWidget{
   final String name;
-  const mainscreen({Key? key, required this.name}) : super(key: key);
+  final String email;
+  const mainscreen({Key? key, required this.name, required this.email}) : super(key: key);
   @override
-  _mainScreen createState() => _mainScreen(Name:name);
+  _mainScreen createState() => _mainScreen(Name:name, Email: email);
 }
 
 class _mainScreen extends State<mainscreen>{
   String Name;
-  _mainScreen({ required this.Name}) : super();
+  String Email;
+  String x = '';
+  int port = 0;
+  _mainScreen({ required this.Name, required this.Email}) : super();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,29 +37,69 @@ class _mainScreen extends State<mainscreen>{
 
                   Row(
                     children: [
-                      Text(
-                        'Welcome Back',
-                        textAlign: TextAlign.center,
-                        style:TextStyle(
-                          fontSize: 35,
+                      ShowUpAnimation(
+                        delayStart: Duration(milliseconds: 200),
+                        animationDuration: Duration(milliseconds: 800),
+                        curve: Curves.easeIn,
+                        direction: Direction.horizontal,
+                        offset: 0.5,
+                        child: AnimatedTextKit(
+                          animatedTexts: [
+                            TypewriterAnimatedText(
+                              'Welcome Back',
+                              textStyle: const TextStyle(
+                                color: Color.fromRGBO(255, 0, 0, 1.0),
+                                fontFamily: 'Raleway',
+                                fontSize: 40.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              cursor: '',
 
-                        ) ,
-                      )
+                              speed: const Duration(milliseconds: 100),
+                            ),
+                          ],
+
+                          totalRepeatCount: 1,
+                          pause: const Duration(milliseconds: 1000),
+                          displayFullTextOnTap: true,
+                          stopPauseOnTap: true,
+                        ),
+                      ),
                     ],
                   ),
                   Row(
 
                     children: [
                       Center(
-                        child: Text(
-                          Name,
-                          textAlign: TextAlign.center,
-                          style:TextStyle(
-                            fontSize: 35,
+                        child: ShowUpAnimation(
+                          delayStart: Duration(milliseconds: 800),
+                          animationDuration: Duration(milliseconds: 800),
+                          curve: Curves.easeIn,
+                          direction: Direction.horizontal,
+                          offset: 0.5,
+                          child: AnimatedTextKit(
+                            animatedTexts: [
+                              TypewriterAnimatedText(
+                                Name + '!',
+                                textStyle: const TextStyle(
+                                  color: Color.fromRGBO(255, 0, 0, 1.0),
+                                  fontFamily: 'Raleway',
+                                  fontSize: 40.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                cursor: '',
 
-                          ) ,
+                                speed: const Duration(milliseconds: 100),
+                              ),
+                            ],
+
+                            totalRepeatCount: 1,
+                            pause: const Duration(milliseconds: 1000),
+                            displayFullTextOnTap: true,
+                            stopPauseOnTap: true,
+                          ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ],
@@ -105,3 +154,4 @@ class _mainScreen extends State<mainscreen>{
   }
 
 }
+
