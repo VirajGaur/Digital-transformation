@@ -25,6 +25,7 @@ class _LoginState extends State<Login> {
   String password = '';
   int port = 0;
   String Name='';
+  String x = '';
   getNameSQL(String email,String password) async {
 
     var settings = new ConnectionSettings(
@@ -151,13 +152,19 @@ class _LoginState extends State<Login> {
                       port = settings.port;
 
                       var conn = await MySqlConnection.connect(settings);
-                      var results = await conn.query("SELECT EmailAddress, Password FROM Customer WHERE EmailAddress = '" +  email +
+                      var results1 = await conn.query("SELECT EmailAddress, Password FROM Customer WHERE EmailAddress = '" +  email +
                           "'AND PASSWORD = MD5('" + password + "');");
+                      var name = await conn.query("SELECT FirstName FROM Customer WHERE EmailAddress = '" + email +"';");
+                      print(name);
+
+                      for (var row in name) {
+                        x = row[0].toString();
+                      }
 
 
-                      print(results);
+                      print(results1);
 
-                      if(results.isEmpty == true){
+                      if(results1.isEmpty == true){
                         print("Incorrect password");
 
 
@@ -167,7 +174,7 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                             context,
 
-                            MaterialPageRoute(builder: (context) => mainState(Name:'john')));
+                            MaterialPageRoute(builder: (context) => mainState(Name: x, Email: email)));
 
                       }
 
