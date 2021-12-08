@@ -118,16 +118,17 @@ import 'package:show_up_animation/show_up_animation.dart';
 import 'MainScreen.dart';
 import 'Maps.dart';
 
-class Grocery extends StatefulWidget {
+class GroceryList extends StatefulWidget {
   @override
-  final String Email;
-  const Grocery({Key? key, required this.Email}) : super(key: key);
-  _groceryState createState() => _groceryState(Email: Email);
+  final String  Email;
+  const GroceryList({Key? key, required this.Email}) : super(key: key);
+  _groceryListState createState() => _groceryListState(Email: Email);
 
   }
 
-class _groceryState extends State<Grocery>{
+class _groceryListState extends State<GroceryList>{
   @override
+  String Email='';
   List storeID =[] ;
   List productID =[];
   List TotalQuantity =[] ;
@@ -138,9 +139,8 @@ class _groceryState extends State<Grocery>{
   List Price=[];
   List image=[];
   var x=0;
-  final String Email;
-  _groceryState({ required this.Email}) : super();
-  connectToSQL() async {
+  _groceryListState({ required this.Email}) : super();
+  connectToSQL(String email) async {
     var settings = new ConnectionSettings(
         host: 'ec2-54-208-82-154.compute-1.amazonaws.com',
         port: 3306,
@@ -151,31 +151,33 @@ class _groceryState extends State<Grocery>{
     int port = settings.port;
 
     var conn = await MySqlConnection.connect(settings);
+    var ID = await conn.query("SELECT CustomerID FROM Customer WHERE EmailAddress = '" + Email +"';");
+    String IDS="";
+    for( var row in ID){
+      IDS=row[0].toString();
+    }
     var count=await conn.query('SELECT StoreID,ProductID,Total_Quantity,Availability,`Co-ordinate X`,`Co-ordinate Y` FROM Inventory');
-    var results = await conn.query('SELECT x.StoreID,x.ProductID,x.Total_Quantity,x.Availability,x.`Co-ordinate X`,x.`Co-ordinate Y`,y.ProductName,y.Price,y.Image FROM Inventory x INNER JOIN Product y ON x.ProductID = y.ProductID');
+    var results = await conn.query('SELECT x.ProductID,x.ProductName,x.Price,x.Image FROM Product x INNER JOIN GroceryList y ON x.ProductID = y.ProductID WHERE y.CustomerID=${IDS}');
     var resultsx=null;
     for (var row in results) {
       setState(() {
 
-          storeID.add(row[0]);
-          productID.add(row[1]);
-          TotalQuantity.add(row[2]);
-          Availability.add(row[3]);
-          Xcord.add(row[4]);
-          Ycord.add(row[5]);
-          ProductName.add(row[6]);
-          Price.add(row[7]);
-          image.add(row[8]);
+
+          productID.add(row[0]);
+          ProductName.add(row[1]);
+          Price.add(row[2]);
+          image.add(row[3]);
       });
 
     };
 
     conn.close();
   }
+
   Widget build(BuildContext context) {
     if(x==0)
       {
-        connectToSQL();
+        connectToSQL(Email);
         x++;
       }
     return Scaffold(
@@ -183,7 +185,7 @@ class _groceryState extends State<Grocery>{
           physics: BouncingScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2,
               childAspectRatio: 0.80),
-          itemCount: storeID.length,
+          itemCount: productID.length,
           itemBuilder: (BuildContext ctx, index) {
             return Container(
               alignment: Alignment.center,
@@ -277,20 +279,6 @@ class _groceryState extends State<Grocery>{
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                  Text((() {
-            if(TotalQuantity[index]>0){
-              if(TotalQuantity[index]>5)
-                {
-                  return "available";
-                }else{
-                return "limited";
-              }
-
-            ;}
-            else
-            return "unavailable";
-            }
-            )())
 
 
                                   ],
@@ -301,28 +289,9 @@ class _groceryState extends State<Grocery>{
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ElevatedButton(
-                                      onPressed: () async {
-                                        var settings = new ConnectionSettings(
-                                            host: 'ec2-54-208-82-154.compute-1.amazonaws.com',
-                                            port: 3306,
-                                            user: 'Youssef',
-                                            password: '40247459',
-                                            db: 'CSC4008'
-                                        );
-                                       int  port = settings.port;
-
-                                        var conn = await MySqlConnection.connect(settings);
-                                        var ID = await conn.query("SELECT CustomerID FROM Customer WHERE EmailAddress = '" + Email +"';");
-                                        String IDS="";
-                                        for( var row in ID){
-                                          IDS=row[0].toString();
-                                        }
-                                        if(IDS.isEmpty==false){
-                                          var IN = await conn.query("INSERT INTO GroceryList(productID,customerID) VALUES ('" + productID[index].toString() +"','" + IDS +"');");
-                                        }
-
+                                      onPressed: (){
                                       },
-                                      child: Text("Add"),
+                                      child: Text("Remove"),
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateColor.resolveWith((states) => Colors.white),
 

@@ -1,3 +1,4 @@
+import 'package:digital_transformation/GroceryList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -23,15 +24,29 @@ class _mainState extends State<mainState> {
   [
     "Main Menu",
     "Groceries",
+    "GroceryList",
     "Maps",
   ];
   List<Widget> screens=
   [
 
-    Grocery(),
+
+
     Maps(),
   ];
+  Widget getWidget(int index) {
+    if(index==0){
+      return mainscreen(name: Name, email: Email);
+    }else if(index ==1){
+      return Grocery(Email: Email);
+    }else if(index==2){
+      return GroceryList(Email: Email,);
+    }else{
+      return Maps();
+    }
+  }
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
@@ -46,9 +61,7 @@ class _mainState extends State<mainState> {
       ),
       body: Container(
           color: Colors.white,
-          child: (index>0)
-              ? screens[index-1]
-              : mainscreen(name: Name, email: Email)
+          child: getWidget(index),
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: index,
@@ -66,6 +79,10 @@ class _mainState extends State<mainState> {
           BottomNavigationBarItem(
               icon: Icon(Icons.local_grocery_store),
               label: "grocery"
+          ),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_basket),
+              label: "grocerylist"
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.map_outlined),
@@ -132,3 +149,5 @@ class _mainState extends State<mainState> {
     );
   }
 }
+
+

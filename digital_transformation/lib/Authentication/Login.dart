@@ -45,10 +45,11 @@ class _LoginState extends State<Login> {
           Name=row[0];
 
 
-
     };
-
+    print(Name);
+    print(Name.runtimeType);
     conn.close();
+    return Name;
   }
 
   @override
@@ -165,6 +166,7 @@ class _LoginState extends State<Login> {
                       print(results1);
 
                       if(results1.isEmpty == true){
+                        print(password);
                         print("Incorrect password");
 
 
