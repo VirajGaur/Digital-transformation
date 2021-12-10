@@ -149,11 +149,11 @@ class _groceryState extends State<Grocery>{
         db: 'CSC4008'
     );
     int port = settings.port;
-
+    var resultsx=null;
     var conn = await MySqlConnection.connect(settings);
     var count=await conn.query('SELECT StoreID,ProductID,Total_Quantity,Availability,`Co-ordinate X`,`Co-ordinate Y` FROM Inventory');
     var results = await conn.query('SELECT x.StoreID,x.ProductID,x.Total_Quantity,x.Availability,x.`Co-ordinate X`,x.`Co-ordinate Y`,y.ProductName,y.Price,y.Image FROM Inventory x INNER JOIN Product y ON x.ProductID = y.ProductID');
-    var resultsx=null;
+
     for (var row in results) {
       setState(() {
 
@@ -276,24 +276,7 @@ class _groceryState extends State<Grocery>{
                               children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                  Text((() {
-            if(TotalQuantity[index]>0){
-              if(TotalQuantity[index]>5)
-                {
-                  return "available";
-                }else{
-                return "limited";
-              }
-
-            ;}
-            else
-            return "unavailable";
-            }
-            )())
-
-
-                                  ],
+                                  children: [],
                                 ),
                                 Padding(
                                     padding:const EdgeInsets.symmetric(horizontal:5.0)),

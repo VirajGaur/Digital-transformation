@@ -138,7 +138,9 @@ class _groceryListState extends State<GroceryList>{
   List ProductName=[];
   List Price=[];
   List image=[];
+  List ListID=[];
   var x=0;
+  var total=0;
   _groceryListState({ required this.Email}) : super();
   connectToSQL(String email) async {
     var settings = new ConnectionSettings(
@@ -156,17 +158,14 @@ class _groceryListState extends State<GroceryList>{
     for( var row in ID){
       IDS=row[0].toString();
     }
-    var count=await conn.query('SELECT StoreID,ProductID,Total_Quantity,Availability,`Co-ordinate X`,`Co-ordinate Y` FROM Inventory');
-    var results = await conn.query('SELECT x.ProductID,x.ProductName,x.Price,x.Image FROM Product x INNER JOIN GroceryList y ON x.ProductID = y.ProductID WHERE y.CustomerID=${IDS}');
-    var resultsx=null;
+    var results = await conn.query('SELECT x.ProductID,x.ProductName,x.Price,x.Image,y.ListID FROM Product x INNER JOIN GroceryList y ON x.ProductID = y.ProductID WHERE y.CustomerID=${IDS}');
     for (var row in results) {
       setState(() {
-
-
           productID.add(row[0]);
           ProductName.add(row[1]);
           Price.add(row[2]);
           image.add(row[3]);
+          ListID.add(row[4]);
       });
 
     };
@@ -289,7 +288,20 @@ class _groceryListState extends State<GroceryList>{
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ElevatedButton(
-                                      onPressed: (){
+                                      onPressed: () async {
+                                        var settings = new ConnectionSettings(
+                                            host: 'ec2-54-208-82-154.compute-1.amazonaws.com',
+                                            port: 3306,
+                                            user: 'Youssef',
+                                            password: '40247459',
+                                            db: 'CSC4008'
+                                        );
+                                        int  port = settings.port;
+
+                                        var conn = await MySqlConnection.connect(settings);
+                                          //var IN = await conn.query("DELETE FROM GroceryList WHERE ListID='" + ListID[index] +"';");
+
+
                                       },
                                       child: Text("Remove"),
                                       style: ButtonStyle(
