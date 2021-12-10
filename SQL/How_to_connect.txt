@@ -1,0 +1,13 @@
+Hostname: ec2-54-208-82-154.compute-1.amazonaws.com
+Port: 3306
+Username: 'Youssef'
+Password: '40247459'
+
+1. To access the database using an sql client such as Heidi, use the hostname and port listed above, open a connection and then use the credentials provided above.
+
+2. Alternatively, use the following command inside a terminal which has had mySQL installed:
+
+mysql -u Youssef-h ec2-54-208-82-154.compute-1.amazonaws.com -p
+
+and when prompted for the password, use the password provided above.
+
